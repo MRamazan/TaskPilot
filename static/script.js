@@ -327,7 +327,7 @@ $("math-submit").addEventListener("click", async () => {
         const solveData = await solveRes.json();
         if (solveData.error) throw new Error(solveData.error);
 
-        $("math-solution-body").innerHTML = marked.parse(solveData.solution);
+        $("math-solution-body").textContent = solveData.solution;
         $("math-solution-card").classList.remove("hidden");
 
     } catch (err) {
