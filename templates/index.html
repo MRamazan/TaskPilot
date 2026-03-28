@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app">
+
+        <header class="header">
+            <div class="header-inner">
+                <div class="brand">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    AI Suite
+                </div>
+                <nav class="nav">
+                    <button class="nav-tab active" data-tab="chat">Chat</button>
+                    <button class="nav-tab" data-tab="translate">Translate</button>
+                    <button class="nav-tab" data-tab="math">Math</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+
+            <section id="tab-chat" class="tab-panel active">
+                <div class="chat-layout">
+                    <aside class="sidebar">
+                        <div class="sidebar-section">
+                            <label class="field-label">Model</label>
+                            <select id="chat-model" class="select"></select>
+                        </div>
+                        <div class="sidebar-section">
+                            <p class="sidebar-note">Shift + Enter for new line</p>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" id="chat-clear">Clear chat</button>
+                    </aside>
+                    <div class="chat-main">
+                        <div class="messages" id="chat-messages">
+                            <div class="empty-state">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                <span>Select a model and start chatting</span>
+                            </div>
+                        </div>
+                        <div class="chat-input-wrap">
+                            <div class="chat-input-row">
+                                <textarea id="chat-input" class="chat-textarea" placeholder="Send a message..." rows="1"></textarea>
+                                <button class="send-btn" id="chat-send" aria-label="Send">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-translate" class="tab-panel">
+                <div class="panel-scroll">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2 class="panel-title">Translation</h2>
+                                <p class="panel-sub">Supports text and image input</p>
+                            </div>
+                            <div class="seg-control">
+                                <button class="seg-btn active" data-target="translate" data-mode="text">Text</button>
+                                <button class="seg-btn" data-target="translate" data-mode="image">Image</button>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="field-label">Target language</label>
+                            <select id="translate-target" class="select select-inline"></select>
+                        </div>
+
+                        <div id="translate-text-section">
+                            <label class="field-label">Source text</label>
+                            <textarea id="translate-text" class="textarea" placeholder="Enter or paste text to translate..."></textarea>
+                        </div>
+
+                        <div id="translate-image-section" class="hidden">
+                            <label class="field-label">Image with text</label>
+                            <div class="dropzone" id="translate-dropzone">
+                                <input type="file" id="translate-file" accept="image/*" class="file-input">
+                                <div class="dropzone-body" id="translate-dropzone-body">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <p class="dropzone-label">Drop image here or click to upload</p>
+                                    <p class="dropzone-hint">PNG, JPG, WEBP</p>
+                                </div>
+                                <img id="translate-preview" class="dropzone-preview hidden" alt="">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="translate-submit">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5 12 19 12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            Translate
+                        </button>
+
+                        <div id="translate-result" class="result-card hidden">
+                            <div class="result-card-head">
+                                <span class="result-card-label">Translation</span>
+                                <span id="translate-model-badge" class="badge"></span>
+                            </div>
+                            <div id="translate-output" class="result-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-math" class="tab-panel">
+                <div class="panel-scroll">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2 class="panel-title">Math Assistant</h2>
+                                <p class="panel-sub">Solves problems step by step</p>
+                            </div>
+                            <div class="seg-control">
+                                <button class="seg-btn active" data-target="math" data-mode="image">Image</button>
+                                <button class="seg-btn" data-target="math" data-mode="text">Text</button>
+                            </div>
+                        </div>
+
+                        <div id="math-image-section">
+                            <label class="field-label">Problem image</label>
+                            <div class="dropzone" id="math-dropzone">
+                                <input type="file" id="math-file" accept="image/*" class="file-input">
+                                <div class="dropzone-body" id="math-dropzone-body">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <p class="dropzone-label">Drop image here or click to upload</p>
+                                    <p class="dropzone-hint">PNG, JPG, WEBP</p>
+                                </div>
+                                <img id="math-preview" class="dropzone-preview hidden" alt="">
+                            </div>
+                        </div>
+
+                        <div id="math-text-section" class="hidden">
+                            <label class="field-label">Math problem</label>
+                            <textarea id="math-text" class="textarea" placeholder="Enter your math problem..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" id="math-submit">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            Solve
+                        </button>
+
+                        <div id="math-extract-card" class="result-card hidden">
+                            <div class="result-card-head">
+                                <span class="result-card-label">Extracted Problem</span>
+                                <span class="badge">llama-4-scout</span>
+                            </div>
+                            <div id="math-extract-body" class="result-body mono"></div>
+                        </div>
+
+                        <div id="math-solution-card" class="result-card hidden">
+                            <div class="result-card-head">
+                                <span class="result-card-label">Solution</span>
+                                <span class="badge">llama-3.3-70b</span>
+                            </div>
+                            <div id="math-solution-body" class="result-body"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="progress" class="progress hidden"><div class="progress-bar"></div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
