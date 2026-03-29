@@ -328,7 +328,14 @@ $("math-submit").addEventListener("click", async () => {
         if (solveData.error) throw new Error(solveData.error);
 
         $("math-solution-body").textContent = solveData.solution;
-        $("math-solution-card").classList.remove("hidden");
+$("math-solution-card").classList.remove("hidden");
+renderMathInElement($("math-solution-body"), {
+    delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+    ],
+    throwOnError: false,
+});
 
     } catch (err) {
         alert("Error: " + err.message);
