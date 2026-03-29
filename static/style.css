@@ -582,7 +582,7 @@ html, body {
 .result-card {
     border: 1px solid var(--gray-200);
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    overflow: visible;
     background: var(--white);
     box-shadow: var(--shadow-xs);
 }
